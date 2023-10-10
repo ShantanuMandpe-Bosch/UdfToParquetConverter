@@ -1,0 +1,13 @@
+{
+    "dependencies": {
+        "apache-arrow": "^13.0.0",
+        "fs": "^0.0.1-security",
+        "jspack": "^0.0.4",
+        "object-sizeof": "^2.6.3"
+    },
+    "scripts": {
+        "pretest": "npm install",
+        "test": "mocha test",
+        "lint": "jscs jspack.js ./test/"
+    }
+}
