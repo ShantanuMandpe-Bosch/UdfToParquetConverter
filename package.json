@@ -3,7 +3,10 @@
         "apache-arrow": "^13.0.0",
         "fs": "^0.0.1-security",
         "jspack": "^0.0.4",
-        "object-sizeof": "^2.6.3"
+        "object-sizeof": "^2.6.3",
+        "parquetjs": "^0.11.2",
+        "plotly.js-dist": "^2.26.2",
+        "plotly.js-dist-min": "^2.26.2"
     },
     "scripts": {
         "pretest": "npm install",
