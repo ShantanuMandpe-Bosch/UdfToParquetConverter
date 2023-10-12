@@ -18,7 +18,6 @@ let sensorID = []
 let sensorValue = []
 let header = []
 
-
 let schema = {
     sensorID: [],
     sensorName: [],
@@ -28,15 +27,9 @@ let schema = {
     scalingFactor: []
 }
 
-// var parquetSchema1 = new parquet.ParquetSchema({
-//     ID: { type: 'UINT_8' },
-//     Values: { type: 'INT_8', repeated: true }
-// })
-
 let schemaObject = {} //object for the schema
 
 // let parquetSchema = new parquet.ParquetSchema(testObj);
-
 rl.on('line', (line) => {
     const binaryData = Buffer.from(line)
 
