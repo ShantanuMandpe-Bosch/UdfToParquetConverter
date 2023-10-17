@@ -1,0 +1,34 @@
+{
+  "fields": [
+    {
+      "name": "key",
+      "type": {
+        "indices": {
+          "isSigned": true,
+          "bitWidth": 32
+        },
+        "dictionary": {},
+        "isOrdered": false,
+        "id": 0
+      },
+      "nullable": true,
+      "metadata": {}
+    },
+    {
+      "name": "value",
+      "type": {
+        "indices": {
+          "isSigned": true,
+          "bitWidth": 32
+        },
+        "dictionary": {},
+        "isOrdered": false,
+        "id": 1
+      },
+      "nullable": true,
+      "metadata": {}
+    }
+  ],
+  "metadata": {},
+  "dictionaries": {}
+}

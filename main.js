@@ -1,6 +1,7 @@
 const fs = require('fs');
 const readLine = require('readline')
 var parquet = require('parquetjs');
+const { Int } = require('apache-arrow');
 
 const stream = fs.createReadStream('example.udf')
 const rl = readLine.createInterface({
@@ -27,7 +28,17 @@ let schema = {
     scalingFactor: []
 }
 
-let schemaObject = {} //object for the schema
+let schemaObject = {
+    'Name' : {type : 'UTF8'},
+    'A - 1' : {type : 'INT_8', optional: true },
+    'B - 1' : {type : 'INT_8', optional: true },
+    'A - 2' : {type : 'INT_16', optional: true },
+    'B - 2' : {type : 'INT_16', optional: true },
+    'A - 3' : {type : 'FLOAT', optional: true },
+    'B - 3' : {type : 'FLOAT', optional: true },
+
+} //object for the schema
+
 
 // let parquetSchema = new parquet.ParquetSchema(testObj);
 rl.on('line', (line) => {
@@ -45,16 +56,6 @@ rl.on('line', (line) => {
         }
     }
     else if ((/^\d:/).test(line) || (/^\d\d:/).test(line)) {
-        const split = line.split(":")
-        // add elements to the schema
-        schema.sensorID.push(split[0])
-        schema.sensorName.push(split[1])
-        schema.eventSize.push(split[2])
-        schema.parseFormat.push(dataTypeEquivalent(split[3]))
-        schema.axisNames.push(split[4])
-        schema.scalingFactor.push(split[5])
-
-        //add elements to the parquet-schema
         header.push(line)
         test = test + binaryData.byteLength
         udf1++
@@ -64,9 +65,28 @@ rl.on('line', (line) => {
 })
 
 rl.on('close', () => {
+    getSchemas()
     readFullFile()
     console.log("File reading complete")
+    console.log(schema)
+   
 })
+
+function getSchemas(){
+    header.forEach((line) => {
+        const split = line.split(":")
+
+        // add elements to the schema
+        schema.sensorID.push(split[0])
+        schema.sensorName.push(split[1])
+        schema.eventSize.push(split[2])
+        schema.parseFormat.push(dataTypeEquivalent(split[3]))
+        schema.axisNames.push(split[4])
+        schema.scalingFactor.push(split[5])
+
+        let axis = String(split[4]).split(",")
+    })
+}
 
 function readFullFile() {
     const filePath = 'example.udf';
@@ -148,7 +168,7 @@ function readFullFile() {
 
 }
 
-function convertToParquet(arr1, arr2) {
+async function convertToParquet(arr1, arr2) {
     let sensorIDArr = []
     let sensorValueArr = []
     let length = (arr1.length)
@@ -162,55 +182,75 @@ function convertToParquet(arr1, arr2) {
             subArr.push(arr2.shift())
         }
         sensorValueArr.push(subArr)
+
     }
-    //console.log(sensorIDArr.length)
-    
-    try {
-        //console.log(sensorValueArr)
-        toParquetFile(sensorIDArr, sensorValueArr)
-    } catch (error) {
-        console.error(error);
+    console.log(sensorIDArr)
+
+    let testArr = []
+    while(sensorValueArr.length >0){
+        let testArrSub = []
+        schema.sensorID.forEach( (i) => {
+            let id = sensorIDArr.indexOf(parseInt(i))
+            if(id == -1){
+                testArrSub.push([0,0])
+            } else {
+                sensorIDArr.splice(id,1)
+                testArrSub.push(sensorValueArr.splice(id,1)[0])  
+            }
+        })
+        testArr.push(testArrSub)
     }
-}
 
-async function toParquetFile(dataID, dataValue) {
-
-    console.log(schemaObject)
-
-    // let parquetSchema = new parquet.ParquetSchema({schemaObject})
     let parquetSchema = new parquet.ParquetSchema({
-        Name: { type: 'UTF8' },
-        A: { type: 'UTF8'},
-        B: { type: 'UTF8'},
-    })
-    
-    let writer = await parquet.ParquetWriter.openFile(parquetSchema, 'main.parquet')
-    for (let i = 0; i < dataID.length; i++) {
-        if (dataID[i] == 1) {
-            await writer.appendRow({
-                Name: String(schema.sensorName[0]),
-                A: String(dataValue[i][0]),
-                B: String(dataValue[i][1]),
-            })
-        } else if (dataID[i] == 2) {
-            await writer.appendRow({
-                Name: String(schema.sensorName[1]),
-                A: String(dataValue[i][0]),
-                B: String(dataValue[i][1]),
-            })
-
-        } else if (dataID[i] == 3) {           
-            await writer.appendRow({
-                Name: String(schema.sensorName[2]),
-                A: String(dataValue[i][0]),
-                B: String(dataValue[i][1]),
-            })        
+        "Sensor1" : {
+            optional : true,
+            fields: {
+                A : {type : 'INT_8', optional: true },
+                B : {type : 'INT_8', optional: true }
+            }
+        },
+        "Sensor2" : {
+            optional : true,
+            fields: {
+                A : {type : 'INT_16', optional: true },
+                B : {type : 'INT_16', optional: true }
+            }
+        },
+        "Sensor3" : {
+            optional : true,
+            fields: {
+                A : {type : 'FLOAT', optional: true },
+                B : {type : 'FLOAT', optional: true }
+            }
         }
-    }
-    console.log(schema)
+    })
+
+    let writer = await parquet.ParquetWriter.openFile(parquetSchema, 'main.parquet')
+
+     for (let i = 0; i < testArr.length; i = i + 1) {
+        await writer.appendRow({
+            "Sensor1" : [
+                {
+                A : (testArr[i][0][0]),
+                B : (testArr[i][0][1])}
+            ],
+            "Sensor2" : [
+                {
+                A : (testArr[i][1][0]),
+                B : (testArr[i][1][1])}
+            ],
+            "Sensor3" : [
+                {
+                A : (testArr[i][2][0]),
+                B : (testArr[i][2][1])}
+            ] 
+        })
+    } 
 
     await writer.close()
+
 }
+
 
 function dataTypeEquivalent(data) {
     let newData = []
