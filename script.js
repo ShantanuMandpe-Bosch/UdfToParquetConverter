@@ -1,6 +1,7 @@
 const fs = require('fs');
 const readLine = require('readline')
 var parquet = require('parquetjs');
+const { Console } = require('console');
 
 const filename = 'example.udf'
 
@@ -30,7 +31,7 @@ let sensorID = []
 let sensorValue = []
 let header = []
 
-const start_uint8 = 240
+const start_uint8 = 240 // 
 
 rl.on('line', (line) => {
     const binaryData = Buffer.from(line)
@@ -57,8 +58,8 @@ rl.on('line', (line) => {
 
 rl.on('close', () => {
     getSchemas()
-    console.log(schema)
-    console.log(schemaObject) 
+    //console.log(schema)
+    //console.log(schemaObject) 
 
     readFullFile()
     console.log("File reading complete")
@@ -112,13 +113,18 @@ function readFullFile(){
 
         let temp = subUint8View.subarray(identifierIndex)
 
-
         let line = []
         for (let i = 0; i < temp.length; i++) {
             line.push(temp[i])
         }
 
-        console.log(typeof schema.eventSize[0])
+        let searchArray = []
+        schema.sensorID.forEach((i) => {
+            let uint8 = Uint8Array.from(i.split("").map(x => x.charCodeAt()))
+            searchArray.push(uint8)
+        })
+        searchArray.push(start_uint8)
+        console.log(searchArray)
 
         let counter = 0
         //assuming its timestamp id and start id are the same ids 
@@ -139,39 +145,75 @@ function readFullFile(){
 
                 let subArr = []
                 subArr = line.splice(counter, valueSize)
-                //console.log("Parse : " + parse + " valueSize : " + subArr.length)
 
-                if(parse == 'INT_8'){
-                    let uint8Array = new Uint8Array(subArr);
-                    let int8Array = new Int8Array(uint8Array.buffer);
-                    for(let i=0; i< int8Array.length;i++){
-                        sensorValue.push(int8Array[i])
-                    }
-                    //console.log(int8Array)
-                } else if (parse == 'INT_16'){
-                    let uint8Array = new Uint8Array(subArr);
-                    let int16Array = new Int16Array(uint8Array.buffer);
-                    for (let i = 0; i < int16Array.length; i++) {
-                        sensorValue.push(int16Array[i])
-                    }
-                    //console.log(int16Array)
-                } else {
-                    let uint8Array = new Uint8Array(subArr);
-                    let float32Array = new Float32Array(uint8Array.buffer);
-                    for (let i = 0; i < float32Array.length; i++) {
-                        sensorValue.push(float32Array[i])
-                    }
-                }
+                dataFormatting(parse,subArr)
             }
         }
-        console.log(sensorID)
-        console.log(sensorValue)
+        //console.log(sensorID)
+        //console.log(sensorValue)
         convertToParquet(sensorID, sensorValue)
     })
 }
 
 function dataFormatting(parseFormat, arr){
-    
+    if(parseFormat == 'INT_8'){
+            let uint8Array = new Uint8Array(arr);
+            let int8Array = new Int8Array(uint8Array.buffer);
+            for(let i=0; i< int8Array.length;i++){
+                sensorValue.push(int8Array[i])
+            }
+            //console.log(int8Array)
+    } else if (parseFormat == 'INT_16'){
+            let uint8Array = new Uint8Array(arr);
+            let int16Array = new Int16Array(uint8Array.buffer);
+            for (let i = 0; i < int16Array.length; i++) {
+                sensorValue.push(int16Array[i])
+            }
+            //console.log(int16Array)
+    } else if (parseFormat == 'UINT_8'){
+            let uint8Array = new Uint8Array(arr);
+            for (let i = 0; i < uint8Array.length; i++) {
+                sensorValue.push(uint8Array[i])
+            }
+    } else if (parseFormat == 'UINT_16'){
+        let uint8Array = new Uint8Array(arr);
+        let uint16Array = new Uint16Array(uint8Array.buffer);
+        for (let i = 0; i < uint16Array.length; i++) {
+            sensorValue.push(uint16Array[i])
+        }
+    } else if (parseFormat == 'INT_32'){
+        let uint8Array = new Uint8Array(arr);
+        let int32Array = new Int32Array(uint8Array.buffer);
+        for (let i = 0; i < int32Array.length; i++) {
+            sensorValue.push(int32Array[i])
+        }
+    } else if (parseFormat == 'UINT_32'){
+        let uint8Array = new Uint8Array(arr);
+        let uint32Array = new Uint32Array(uint8Array.buffer);
+        for (let i = 0; i < uint32Array.length; i++) {
+            sensorValue.push(uint32Array[i])
+        }
+    } else if (parseFormat == 'INT_64'){
+        let uint8Array = new Uint8Array(arr);
+        let int64Array = new BigInt64Array(uint8Array.buffer);
+        for (let i = 0; i < int64Array.length; i++) {
+            sensorValue.push(int64Array[i])
+        }
+    } else if (parseFormat == 'UINT_64'){
+        let uint8Array = new Uint8Array(arr);
+        let uint64Array = new BigUint64Array(uint8Array.buffer);
+        for (let i = 0; i < uint64Array.length; i++) {
+            sensorValue.push(uint64Array[i])
+        }
+    } else if (parseFormat == 'FLOAT'){
+        let uint8Array = new Uint8Array(arr);
+        let float32Array = new Float32Array(uint8Array.buffer);
+        for (let i = 0; i < float32Array.length; i++) {
+            sensorValue.push(float32Array[i])
+        }
+    } else {
+        console.error("This is an invalid sensor Data Format")
+    }
 }
 
 async function convertToParquet(arr1, arr2){
@@ -201,10 +243,11 @@ async function convertToParquet(arr1, arr2){
         schema.sensorID.forEach( (i) => {
             //console.log(i)
             let id = sensorIDArr.indexOf(parseInt(i))
-            let length = String(schema.axisNames.at(schema.sensorID.indexOf(id))).split().length
+            let length = String(schema.axisNames.at(schema.sensorID.indexOf(id))).split(",").length
 
             if(id == -1){
                 let myArray = new Array(length).fill(0);
+                console.log(length)
                 testArrSub.push(myArray) 
                 //testArrSub.push([0,0]) //need to change - this is hard coded
             } else {
@@ -217,57 +260,9 @@ async function convertToParquet(arr1, arr2){
     console.log(testArr)
 
     let parquetSchema = new parquet.ParquetSchema(schemaObject)
-    // let parquetSchema = new parquet.ParquetSchema({
-    //     "1" : {
-    //         optional : true,
-    //         fields: {
-    //             A : {type : 'INT_8', optional: true },
-    //             B : {type : 'INT_8', optional: true }
-    //         }
-    //     },
-    //     "2" : {
-    //         optional : true,
-    //         fields: {
-    //             A : {type : 'INT_16', optional: true },
-    //             B : {type : 'INT_16', optional: true }
-    //         }
-    //     },
-    //     "3" : {
-    //         optional : true,
-    //         fields: {
-    //             A : {type : 'FLOAT', optional: true },
-    //             B : {type : 'FLOAT', optional: true }
-    //         }
-    //     }
-    // })
-
-    //console.log(parquetSchema)
 
     let writer = await parquet.ParquetWriter.openFile(parquetSchema, 'main.parquet')
-
-    //  for (let i = 0; i < testArr.length; i = i + 1) {
-    //     await writer.appendRow({
-    //         "1" : [
-    //             {
-    //             A : (testArr[i][0][0]),
-    //             B : (testArr[i][0][1])}
-    //         ],
-    //         "2" : [
-    //             {
-    //             A : (testArr[i][1][0]),
-    //             B : (testArr[i][1][1])}
-    //         ],
-    //         "3" : [
-    //             {
-    //             A : (testArr[i][2][0]),
-    //             B : (testArr[i][2][1])}
-    //         ] 
-    //     })
-    // } 
-
     
-    
-
     let test1 = {}
     for (let i = 0; i < testArr.length; i = i + 1) {
         schema.sensorName.forEach((id) => {
