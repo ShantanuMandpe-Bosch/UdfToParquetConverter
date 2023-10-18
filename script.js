@@ -2,25 +2,13 @@ const fs = require('fs');
 const readLine = require('readline')
 var parquet = require('parquetjs');
 
-let filename = 'example.udf'
+const filename = 'example.udf'
 
 const stream = fs.createReadStream(filename)
 const rl = readLine.createInterface({
     input: stream,
     crlfDelay: Infinity
 })
-
-// https://arrow.apache.org/docs/js/index.html
-let udf1 = 0
-let test = 0
-
-let axis
-
-let timeStamp = []
-let timeID = []
-let sensorID = []
-let sensorValue = []
-let header = []
 
 let schema = {
     sensorID: [],
@@ -31,19 +19,17 @@ let schema = {
     scalingFactor: []
 }
 
-let schemaObject = {
-    'Name' : {type : 'UTF8'},
-    'A - 1' : {type : 'INT_8', optional: true },
-    'B - 1' : {type : 'INT_8', optional: true },
-    'A - 2' : {type : 'INT_16', optional: true },
-    'B - 2' : {type : 'INT_16', optional: true },
-    'A - 3' : {type : 'FLOAT', optional: true },
-    'B - 3' : {type : 'FLOAT', optional: true },
+let udf1 = 0
+let test = 0
 
-} //object for the schema
+let sensorTime = []
+let timeID = []
+let sensorID = []
+let sensorValue = []
+let header = []
 
+const start_uint8 = 240
 
-// let parquetSchema = new parquet.ParquetSchema(testObj);
 rl.on('line', (line) => {
     const binaryData = Buffer.from(line)
 
@@ -69,10 +55,9 @@ rl.on('line', (line) => {
 
 rl.on('close', () => {
     getSchemas()
+    console.log(schema)
     readFullFile()
     console.log("File reading complete")
-    console.log(schema)
-   
 })
 
 function getSchemas(){
@@ -89,57 +74,56 @@ function getSchemas(){
     })
 }
 
-function readFullFile() {
-    const filePath = filename;
-    fs.readFile(filePath, (err, data) => {
-        if (err) {
-            console.error('Error reading file:', err);
-            return;
+function readFullFile(){
+    fs.readFile(filename, (err,data) => {
+        if(err){
+            console.error("Error Reading File", err)
+            return
         }
-        
         const binaryData = Buffer.from(data)
         buffer = new ArrayBuffer(binaryData.byteLength)
         let uint8View = new Uint8Array(buffer)
-        let line = []
+
         for (let i = 0; i < binaryData.byteLength; i++) {
             uint8View[i] = binaryData[i]
-            line.push(uint8View[i])
         }
 
-        let arr = []
-        for (let i = 144; i < line.length; i++) {
-            arr.push(line[i])
-            //arrData.push(data[i])
+        // here we have some header part and rest is body
+        let subUint8View = uint8View.subarray(test) 
+
+        let identifierIndex = subUint8View.indexOf(start_uint8) //first entry of the value f0 - using as an identifier
+
+        let temp = subUint8View.subarray(identifierIndex)
+
+
+        let line = []
+        for (let i = 0; i < temp.length; i++) {
+            line.push(temp[i])
         }
 
-        //console.log("Arr " + arr)
-        
-        let newArr = []
-        for (let i = 17; i < arr.length; i++) {
-            newArr.push(arr[i])
-        }
-		
-		console.log(newArr)
+        console.log(typeof schema.eventSize[0])
 
         let counter = 0
-
-        while (newArr.length > 0) {
-            if (counter == 0 || counter % (header.length + 1) == 0) {
-                timeID.push(newArr.shift())
-                for (let j = 0; j < 8; j++) {
-                    timeStamp.push(newArr.shift())
-                }
-                counter++
+        //assuming its timestamp id and start id are the same ids 
+        while (line.length > 0) {
+            if(line[counter] == start_uint8){
+                timeID.push(line.splice(counter,1))
+                sensorTime.push(line.splice(counter,8))
             } else {
-                sensorID.push(newArr.shift())
+                sensorID.push(line.shift())
+                //console.log("SensorId : " + sensorID)
+
                 let id = schema.sensorID.indexOf(String(sensorID.at(-1)))
-                let valueSize = schema.eventSize[String(id)]
+                //console.log("id : " + id)
+                let valueSize = schema.eventSize[parseInt(id)]
+                //console.log("valueSize : " + parseInt(valueSize))
                 let parse = schema.parseFormat[String(id)]
+                //console.log("parse : " + parse)
+
                 let subArr = []
-                for (let j = 0; j < valueSize; j++) {
-                    subArr.push(newArr.shift())
-                }
-                ////////
+                subArr = line.splice(counter, valueSize)
+                //console.log("Parse : " + parse + " valueSize : " + subArr.length)
+
                 if(parse == 'INT_8'){
                     let uint8Array = new Uint8Array(subArr);
                     let int8Array = new Int8Array(uint8Array.buffer);
@@ -160,44 +144,45 @@ function readFullFile() {
                     for (let i = 0; i < float32Array.length; i++) {
                         sensorValue.push(float32Array[i])
                     }
-
-                }               
-                ///////
-                counter++
+                }
             }
         }
+        //console.log(sensorID)
+        //console.log(sensorValue)
         convertToParquet(sensorID, sensorValue)
-    });
-
+    })
 }
 
-async function convertToParquet(arr1, arr2) {
+async function convertToParquet(arr1, arr2){
     let sensorIDArr = []
     let sensorValueArr = []
-    let length = (arr1.length)
-    for (let i = 0; i < length; i++) {
+
+    for (let i = 0; i < arr1.length; i++) {
         let x = arr1.shift()
-        console.log(x)
+        //console.log("Value : " + x)
         sensorIDArr.push(x)
-        let id = schema.sensorID.indexOf(String(sensorIDArr.at(sensorIDArr.length)))
-        console.log(id)
+        let id = schema.sensorID.indexOf(String(sensorIDArr.at(-1)))
+        //console.log(id)
         let axis = schema.axisNames[String(id)].split(",")  
         let subArr = []
-        for (let j = 0; j < parseInt(axis.length); j++) { //this is hardcoded 
+        for (let j = 0; j < parseInt(axis.length); j++) { 
             subArr.push(arr2.shift())
         }
         sensorValueArr.push(subArr)
 
     }
-    console.log(sensorIDArr)
+    // console.log(sensorIDArr)
+    // console.log(sensorValueArr)
 
     let testArr = []
     while(sensorValueArr.length >0){
         let testArrSub = []
         schema.sensorID.forEach( (i) => {
+            //console.log(i)
             let id = sensorIDArr.indexOf(parseInt(i))
+
             if(id == -1){
-                testArrSub.push([0,0])
+                testArrSub.push([0,0]) //need to change - this is hard coded
             } else {
                 sensorIDArr.splice(id,1)
                 testArrSub.push(sensorValueArr.splice(id,1)[0])  
@@ -205,6 +190,7 @@ async function convertToParquet(arr1, arr2) {
         })
         testArr.push(testArrSub)
     }
+    //console.log(testArr)
 
     let parquetSchema = new parquet.ParquetSchema({
         "Sensor1" : {
@@ -230,6 +216,21 @@ async function convertToParquet(arr1, arr2) {
         }
     })
 
+
+    let test1 = {}
+    test1["1"] = {}
+    console.log(test1) 
+    test1["1"]["optional"] = true
+    console.log(test1) 
+    test1["1"]["fields"] = {}
+    console.log(test1) 
+    test1["1"]["fields"]["A"] = {}
+    console.log(test1) 
+    test1["1"]["fields"]["A"]["type"] = "INT_8"
+    test1["1"]["fields"]["A"]["optional"] = true
+    console.log(test1) 
+
+
     let writer = await parquet.ParquetWriter.openFile(parquetSchema, 'main.parquet')
 
      for (let i = 0; i < testArr.length; i = i + 1) {
@@ -253,9 +254,11 @@ async function convertToParquet(arr1, arr2) {
     } 
 
     await writer.close()
-
 }
 
+function getParquetSchema(){
+
+}
 
 function dataTypeEquivalent(data) {
     let newData = []
@@ -302,4 +305,3 @@ function dataTypeEquivalent(data) {
     data = newData.join(",")
     return data
 }
-

@@ -17,7 +17,6 @@ async function merge(f1,f2,output){
 
         const mergedSchema = new parquet.ParquetSchema(test)
 
-
         const writer = await parquet.ParquetWriter.openFile(mergedSchema,output)
 
         let cursor = fr1.getCursor();
