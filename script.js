@@ -2,7 +2,7 @@ const fs = require('fs');
 const readLine = require('readline')
 var parquet = require('parquetjs');
 
-const filename = 'main.udf'
+const filename = 'example.udf'
 
 const stream = fs.createReadStream(filename)
 const rl = readLine.createInterface({
@@ -37,11 +37,11 @@ rl.on('line', (line) => {
 
     if ((/^(1.0|1.1)/).test(line)) {
         if (line == "1.0") {
-            variable_schema = 0
+            //variable_schema = 0
             header.push(line)
             test = test + binaryData.byteLength
         } else if (line == "1.1") {
-            variable_schema = 1
+            //variable_schema = 1
             header.push(line)
             test = test + binaryData.byteLength
         }
@@ -59,6 +59,7 @@ rl.on('close', () => {
     getSchemas()
     console.log(schema)
     console.log(schemaObject) 
+
     readFullFile()
     console.log("File reading complete")
 })
@@ -67,15 +68,16 @@ function getSchemas(){
     header.forEach((line) => {
         const split = line.split(":")
 
-        // add elements to the schema
+        // add elements to the main schema
         schema.sensorID.push(split[0])
         schema.sensorName.push(String(split[1]).trim())
         schema.eventSize.push(split[2])
-        schema.parseFormat.push(dataTypeEquivalent(split[3]))
+        schema.parseFormat.push(String(dataTypeEquivalent(split[3])).split(",").at(0))
         schema.axisNames.push(String(split[4]).trim().toUpperCase())
         schema.scalingFactor.push(split[5])
     })
 
+    // add elements to the parquet object schema
     schema.sensorName.forEach((id) => {
         schemaObject[id] = {}
         schemaObject[id]["optional"] = true
@@ -86,7 +88,6 @@ function getSchemas(){
             schemaObject[id]["fields"][axis.trim().toUpperCase()]["type"] = String(schema.parseFormat.at(schema.sensorName.indexOf(id)))
             schemaObject[id]["fields"][axis.trim().toUpperCase()]["optional"] = true
         })
-        
     }) 
 }
 
@@ -169,6 +170,10 @@ function readFullFile(){
     })
 }
 
+function dataFormatting(parseFormat, arr){
+    
+}
+
 async function convertToParquet(arr1, arr2){
     let sensorIDArr = []
     let sensorValueArr = []
@@ -196,9 +201,12 @@ async function convertToParquet(arr1, arr2){
         schema.sensorID.forEach( (i) => {
             //console.log(i)
             let id = sensorIDArr.indexOf(parseInt(i))
+            let length = String(schema.axisNames.at(schema.sensorID.indexOf(id))).split().length
 
             if(id == -1){
-                testArrSub.push([0,0]) //need to change - this is hard coded
+                let myArray = new Array(length).fill(0);
+                testArrSub.push(myArray) 
+                //testArrSub.push([0,0]) //need to change - this is hard coded
             } else {
                 sensorIDArr.splice(id,1)
                 testArrSub.push(sensorValueArr.splice(id,1)[0])  

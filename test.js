@@ -41,4 +41,7 @@ const f1 = 'main1.parquet'
 const f2 = 'main2.parquet'
 const output = 'merged.parquet'
 
-merge(f1,f2,output)
+// merge(f1,f2,output)
+
+
+console.log(myArray)
