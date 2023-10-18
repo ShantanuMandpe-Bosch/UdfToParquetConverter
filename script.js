@@ -2,7 +2,7 @@ const fs = require('fs');
 const readLine = require('readline')
 var parquet = require('parquetjs');
 
-const filename = 'example.udf'
+const filename = 'main.udf'
 
 const stream = fs.createReadStream(filename)
 const rl = readLine.createInterface({
@@ -18,6 +18,8 @@ let schema = {
     axisNames: [],
     scalingFactor: []
 }
+let schemaObject = {}
+
 
 let udf1 = 0
 let test = 0
@@ -56,6 +58,7 @@ rl.on('line', (line) => {
 rl.on('close', () => {
     getSchemas()
     console.log(schema)
+    console.log(schemaObject) 
     readFullFile()
     console.log("File reading complete")
 })
@@ -66,12 +69,25 @@ function getSchemas(){
 
         // add elements to the schema
         schema.sensorID.push(split[0])
-        schema.sensorName.push(split[1])
+        schema.sensorName.push(String(split[1]).trim())
         schema.eventSize.push(split[2])
         schema.parseFormat.push(dataTypeEquivalent(split[3]))
-        schema.axisNames.push(split[4])
+        schema.axisNames.push(String(split[4]).trim().toUpperCase())
         schema.scalingFactor.push(split[5])
     })
+
+    schema.sensorName.forEach((id) => {
+        schemaObject[id] = {}
+        schemaObject[id]["optional"] = true
+        schemaObject[id]["fields"] = {}
+        let axis = String(schema.axisNames.at(schema.sensorName.indexOf(id))).split(",")
+        axis.forEach((axis) => {
+            schemaObject[id]["fields"][axis.trim().toUpperCase()] = {}
+            schemaObject[id]["fields"][axis.trim().toUpperCase()]["type"] = String(schema.parseFormat.at(schema.sensorName.indexOf(id)))
+            schemaObject[id]["fields"][axis.trim().toUpperCase()]["optional"] = true
+        })
+        
+    }) 
 }
 
 function readFullFile(){
@@ -147,8 +163,8 @@ function readFullFile(){
                 }
             }
         }
-        //console.log(sensorID)
-        //console.log(sensorValue)
+        console.log(sensorID)
+        console.log(sensorValue)
         convertToParquet(sensorID, sensorValue)
     })
 }
@@ -171,8 +187,8 @@ async function convertToParquet(arr1, arr2){
         sensorValueArr.push(subArr)
 
     }
-    // console.log(sensorIDArr)
-    // console.log(sensorValueArr)
+    console.log(sensorIDArr)
+    console.log(sensorValueArr)
 
     let testArr = []
     while(sensorValueArr.length >0){
@@ -190,75 +206,79 @@ async function convertToParquet(arr1, arr2){
         })
         testArr.push(testArrSub)
     }
-    //console.log(testArr)
+    console.log(testArr)
 
-    let parquetSchema = new parquet.ParquetSchema({
-        "Sensor1" : {
-            optional : true,
-            fields: {
-                A : {type : 'INT_8', optional: true },
-                B : {type : 'INT_8', optional: true }
-            }
-        },
-        "Sensor2" : {
-            optional : true,
-            fields: {
-                A : {type : 'INT_16', optional: true },
-                B : {type : 'INT_16', optional: true }
-            }
-        },
-        "Sensor3" : {
-            optional : true,
-            fields: {
-                A : {type : 'FLOAT', optional: true },
-                B : {type : 'FLOAT', optional: true }
-            }
-        }
-    })
+    let parquetSchema = new parquet.ParquetSchema(schemaObject)
+    // let parquetSchema = new parquet.ParquetSchema({
+    //     "1" : {
+    //         optional : true,
+    //         fields: {
+    //             A : {type : 'INT_8', optional: true },
+    //             B : {type : 'INT_8', optional: true }
+    //         }
+    //     },
+    //     "2" : {
+    //         optional : true,
+    //         fields: {
+    //             A : {type : 'INT_16', optional: true },
+    //             B : {type : 'INT_16', optional: true }
+    //         }
+    //     },
+    //     "3" : {
+    //         optional : true,
+    //         fields: {
+    //             A : {type : 'FLOAT', optional: true },
+    //             B : {type : 'FLOAT', optional: true }
+    //         }
+    //     }
+    // })
 
-
-    let test1 = {}
-    test1["1"] = {}
-    console.log(test1) 
-    test1["1"]["optional"] = true
-    console.log(test1) 
-    test1["1"]["fields"] = {}
-    console.log(test1) 
-    test1["1"]["fields"]["A"] = {}
-    console.log(test1) 
-    test1["1"]["fields"]["A"]["type"] = "INT_8"
-    test1["1"]["fields"]["A"]["optional"] = true
-    console.log(test1) 
-
+    //console.log(parquetSchema)
 
     let writer = await parquet.ParquetWriter.openFile(parquetSchema, 'main.parquet')
 
-     for (let i = 0; i < testArr.length; i = i + 1) {
-        await writer.appendRow({
-            "Sensor1" : [
-                {
-                A : (testArr[i][0][0]),
-                B : (testArr[i][0][1])}
-            ],
-            "Sensor2" : [
-                {
-                A : (testArr[i][1][0]),
-                B : (testArr[i][1][1])}
-            ],
-            "Sensor3" : [
-                {
-                A : (testArr[i][2][0]),
-                B : (testArr[i][2][1])}
-            ] 
-        })
+    //  for (let i = 0; i < testArr.length; i = i + 1) {
+    //     await writer.appendRow({
+    //         "1" : [
+    //             {
+    //             A : (testArr[i][0][0]),
+    //             B : (testArr[i][0][1])}
+    //         ],
+    //         "2" : [
+    //             {
+    //             A : (testArr[i][1][0]),
+    //             B : (testArr[i][1][1])}
+    //         ],
+    //         "3" : [
+    //             {
+    //             A : (testArr[i][2][0]),
+    //             B : (testArr[i][2][1])}
+    //         ] 
+    //     })
+    // } 
+
+    
+    
+
+    let test1 = {}
+    for (let i = 0; i < testArr.length; i = i + 1) {
+        schema.sensorName.forEach((id) => {
+            let axisList = String(schema.axisNames.at(schema.sensorName.indexOf(id))).split(",")
+            let new1 = {}
+            test1[id] = [] 
+            axisList.forEach((element) => {
+                let a = schema.sensorName.indexOf(id)
+                let b = axisList.indexOf(element)
+                new1[element] = testArr[i][parseInt(a)][parseInt(b)]
+            })
+            test1[id] = [new1] 
+        }) 
+        await writer.appendRow(test1)
     } 
 
     await writer.close()
 }
 
-function getParquetSchema(){
-
-}
 
 function dataTypeEquivalent(data) {
     let newData = []
