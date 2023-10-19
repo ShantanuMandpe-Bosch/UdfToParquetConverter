@@ -2,6 +2,8 @@ const fs = require('fs');
 const readLine = require('readline')
 var parquet = require('parquetjs');
 
+//import parquet from 'parquetjs'
+
 const filename = '../example.udf'
 const outputPath = 'main.parquet'
 

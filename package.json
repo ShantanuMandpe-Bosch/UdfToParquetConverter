@@ -5,6 +5,7 @@
         "express-fileupload": "^1.4.1",
         "fs": "^0.0.1-security",
         "jspack": "^0.0.4",
+        "mocha": "^10.2.0",
         "multer": "^1.4.5-lts.1",
         "object-sizeof": "^2.6.3",
         "parquetjs": "^0.11.2",
