@@ -4,7 +4,10 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
-const udf = require('./scripts/script.js')
+
+let udf1 = 0
+let test = 0
+let header = []
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,7 +22,7 @@ app.post('/modify', (req, res) => {
     }
 
     const uploadedFile = req.files.file;
-    const newFilename = uuidv4() + path.extname(udf.outputPath);
+    const newFilename = uuidv4() + path.extname(uploadedFile.name);
     const uploadPath = path.join(__dirname, 'uploads', uploadedFile.name);
     const modifiedPath = path.join(__dirname, 'modified', newFilename);
 
@@ -28,10 +31,7 @@ app.post('/modify', (req, res) => {
             return res.status(500).send(err);
         }
 
-        // Here, you can append data to the file using fs
-        const newData = 'Additional data to append to the file.\n';
-
-        udf.read(uploadPath)
+        read(uploadPath)
 
         res.download(modifiedPath, newFilename, (err) => {
             if (err) {
@@ -45,3 +45,40 @@ app.post('/modify', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+function read(filename){
+    console.log("Creating read stream")
+
+    const stream = fs.createReadStream(filename)
+    const rl = readLine.createInterface({
+        input: stream,
+        crlfDelay: Infinity
+    })
+
+    console.log("Reading file lines")
+
+    rl.on('line', (line) => {
+        const binaryData = Buffer.from(line)
+    
+        if ((/^(1.0|1.1)/).test(line)) {
+            if (line == "1.0") {
+                //variable_schema = 0
+                header.push(line)
+                test = test + binaryData.byteLength
+            } else if (line == "1.1") {
+                //variable_schema = 1
+                header.push(line)
+                test = test + binaryData.byteLength
+            }
+        }
+        else if ((/^\d:/).test(line) || (/^\d\d:/).test(line)) {
+            header.push(line)
+            test = test + binaryData.byteLength
+            udf1++
+        }
+    })
+
+    rl.on('close', () => {
+        console.log("File reading complete")
+    })    
+}
