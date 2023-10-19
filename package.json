@@ -10,7 +10,8 @@
         "object-sizeof": "^2.6.3",
         "parquetjs": "^0.11.2",
         "plotly.js-dist": "^2.26.2",
-        "plotly.js-dist-min": "^2.26.2"
+        "plotly.js-dist-min": "^2.26.2",
+        "uuid": "^9.0.1"
     },
     "scripts": {
         "pretest": "npm install",

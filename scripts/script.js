@@ -7,6 +7,8 @@ var parquet = require('parquetjs');
 const filename = '../example.udf'
 const outputPath = 'main.parquet'
 
+read(filename)
+
 let schema = {
     sensorID: [],
     sensorName: [],
@@ -68,7 +70,6 @@ function read(filename){
         console.log("File reading complete")
     })    
 }
-
 
 function getSchemas(){
     header.forEach((line) => {
