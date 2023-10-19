@@ -1,6 +1,7 @@
-# -*- coding: utf-8 -*-
+filePath = 'main.parquet'
+output = 'main.csv'
 
 import pandas as pd
-song_embeddings = pd.read_parquet('../main.parquet')
-song_embeddings.to_csv('csvExample.csv')
-print(song_embeddings)
+df = pd.read_parquet(filePath)
+df.to_csv(output)
+print(df)

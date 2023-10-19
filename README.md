@@ -5,4 +5,6 @@
 - Update the filenames and output paths before using the script. 
 - Use only for udf files with the udf-1.0 
 
-[comment]: # (This actually is the most platform independent comment)
+## Apache Parquet to csv Converter using Python
+- Use test.py python script to convert the .parquet file generated to .csv file
+

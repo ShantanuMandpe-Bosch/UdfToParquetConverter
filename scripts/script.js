@@ -1,9 +1,9 @@
 const fs = require('fs');
 const readLine = require('readline')
 var parquet = require('parquetjs');
-const { Console } = require('console');
 
 const filename = '../example.udf'
+const outputPath = 'main.parquet'
 
 let schema = {
     sensorID: [],
@@ -267,7 +267,7 @@ async function convertToParquet(arr1, arr2){
 
     let parquetSchema = new parquet.ParquetSchema(schemaObject)
 
-    let writer = await parquet.ParquetWriter.openFile(parquetSchema, 'main.parquet')
+    let writer = await parquet.ParquetWriter.openFile(parquetSchema, outputPath)
     
     let test1 = {}
     let testArrLength = testArr.length
