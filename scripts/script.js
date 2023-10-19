@@ -30,11 +30,15 @@ let header = []
 const start_uint8 = 240 // 
 
 function read(filename){
+    console.log("Creating read stream")
+
     const stream = fs.createReadStream(filename)
     const rl = readLine.createInterface({
         input: stream,
         crlfDelay: Infinity
     })
+
+    console.log("Reading file lines")
 
     rl.on('line', (line) => {
         const binaryData = Buffer.from(line)

@@ -4,7 +4,7 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 
-const udf = require('./scripts/script')
+const udf = require('./scripts/script.js')
 
 const app = express();
 const port = process.env.PORT || 3000;
