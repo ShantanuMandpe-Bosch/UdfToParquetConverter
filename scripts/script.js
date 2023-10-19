@@ -29,43 +29,42 @@ let header = []
 
 const start_uint8 = 240 // 
 
+function read(filename){
+    const stream = fs.createReadStream(filename)
+    const rl = readLine.createInterface({
+        input: stream,
+        crlfDelay: Infinity
+    })
 
-const stream = fs.createReadStream(filename)
-const rl = readLine.createInterface({
-    input: stream,
-    crlfDelay: Infinity
-})
-
-
-rl.on('line', (line) => {
-    const binaryData = Buffer.from(line)
-
-    if ((/^(1.0|1.1)/).test(line)) {
-        if (line == "1.0") {
-            //variable_schema = 0
-            header.push(line)
-            test = test + binaryData.byteLength
-        } else if (line == "1.1") {
-            //variable_schema = 1
-            header.push(line)
-            test = test + binaryData.byteLength
+    rl.on('line', (line) => {
+        const binaryData = Buffer.from(line)
+    
+        if ((/^(1.0|1.1)/).test(line)) {
+            if (line == "1.0") {
+                //variable_schema = 0
+                header.push(line)
+                test = test + binaryData.byteLength
+            } else if (line == "1.1") {
+                //variable_schema = 1
+                header.push(line)
+                test = test + binaryData.byteLength
+            }
         }
-    }
-    else if ((/^\d:/).test(line) || (/^\d\d:/).test(line)) {
-        header.push(line)
-        test = test + binaryData.byteLength
-        udf1++
-    }
-})
+        else if ((/^\d:/).test(line) || (/^\d\d:/).test(line)) {
+            header.push(line)
+            test = test + binaryData.byteLength
+            udf1++
+        }
+    })
 
-rl.on('close', () => {
-    getSchemas()
-    //console.log(schema)
-    //console.log(schemaObject) 
+    rl.on('close', () => {
+        getSchemas()
+    
+        readFullFile()
+        console.log("File reading complete")
+    })    
+}
 
-    readFullFile()
-    console.log("File reading complete")
-})
 
 function getSchemas(){
     header.forEach((line) => {
@@ -289,6 +288,7 @@ async function convertToParquet(arr1, arr2){
     } 
 
     await writer.close()
+
 }
 
 
@@ -338,3 +338,6 @@ function dataTypeEquivalent(data) {
     data = newData.join(",")
     return data
 }
+
+exports.read = read
+exports.outputPath = outputPath
