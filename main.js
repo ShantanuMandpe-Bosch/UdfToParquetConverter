@@ -67,22 +67,22 @@ function handleSubmit(event) {
 //     const formData = new FormData();
 //     formData.append('file', fileInput.files[0]);
 
-    fetch('/modify', {
-        method: 'POST',
-        body: formData,
-        mode: "cors"
-    })
-        .then(response => response.blob())
-        .then(blob => {
-            const downloadLink = document.createElement('a');
-            downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = newFilename;
-            downloadLink.style.display = 'none';
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        })
-        .catch(error => {
-            console.error('An error occurred:', error);
-        });
-});
+//     fetch('/modify', {
+//         method: 'POST',
+//         body: formData,
+//         mode: "cors"
+//     })
+//         .then(response => response.blob())
+//         .then(blob => {
+//             const downloadLink = document.createElement('a');
+//             downloadLink.href = URL.createObjectURL(blob);
+//             downloadLink.download = newFilename;
+//             downloadLink.style.display = 'none';
+//             document.body.appendChild(downloadLink);
+//             downloadLink.click();
+//             document.body.removeChild(downloadLink);
+//         })
+//         .catch(error => {
+//             console.error('An error occurred:', error);
+//         });
+// });
