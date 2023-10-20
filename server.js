@@ -6,11 +6,11 @@ const path = require('path');
 const readLine = require('readline')
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5500;
 
 app.use(fileUpload());
 
-app.use(express.static(__dirname));
+//app.use(express.static(__dirname));
 
 // function getSchemas(schema, schemaObject, header) {
 //     console.log(header)
