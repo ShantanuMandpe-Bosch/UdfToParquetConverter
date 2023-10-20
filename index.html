@@ -4,12 +4,17 @@
     <title>File Modification</title>
 </head>
 <body>
-    <form>
+    <form method="post" enctype="multipart/form-data">
+        <label for="file">File</label>
+        <input id="file" name="file" type="file" accept="*.*"/>
+        <button>Upload</button>
+      </form>
+    <!-- <form>
         <input type="file" id="fileInput" accept="*.*">
         <input type="text" id="newFilename" placeholder="New Filename">
         <button type="button" id="modifyButton">Modify and Download</button>
-    </form>
+    </form> -->
 
-    <script type="module" src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
