@@ -16,6 +16,7 @@ document.getElementById('modifyButton').addEventListener('click', function () {
     fetch('/modify', {
         method: 'POST',
         body: formData,
+        mode: "cors"
     })
         .then(response => response.blob())
         .then(blob => {

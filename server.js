@@ -120,12 +120,6 @@ app.post('/modify', (req, res) => {
                 return res.status(500).send(err);
             }
 
-            // res.download(modifiedPath, uploadedFile.name, (err) => {
-            //     if (err) {
-            //         return res.status(500).send(err);
-            //     }
-            // });
-
             fs.rename(uploadPath, modifiedPath, (err) => {
                 if (err) {
                     return res.status(500).send(err);
