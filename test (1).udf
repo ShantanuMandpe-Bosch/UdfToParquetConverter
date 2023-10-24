@@ -1,0 +1,150 @@
+1: Accelerometer (G): 6: s16,s16,s16: x,y,z: 0.000488281250000
+2: Gyroscope (dps): 6: s16,s16,s16: x,y,z: 0.061035156250000
+3: IMU Temperature (C): 4: f: t: 1.000000000000000
+4: BMM350 Mag (uT): 12: f,f,f: x,y,z: 1.000000000000000
+5: BMM350 Temp (C): 4: f: t: 1.000000000000000
+6: Aux Mag (uT): 12: f,f,f: x,y,z: 1.000000000000000
+7: Rot vector 0 (mag): 20: f,f,f,f,f: x,y,z,w,a: 1.000000000000000
+8: Rot vector 1 (aux): 20: f,f,f,f,f: x,y,z,w,a: 1.000000000000000
+9: Game rot vector 0: 20: f,f,f,f,f: x,y,z,w,a: 1.000000000000000
+10: Game rot vector 1: 20: f,f,f,f,f: x,y,z,w,a: 1.000000000000000
+13: Euler 0: 20: f,f,f,f,f: h,p,r,y,ha: 1.000000000000000
+14: Euler 1: 20: f,f,f,f,f: h,p,r,y,ha: 1.000000000000000
+15: NDoF Calib 0: 4: u8,u8,u8,u8: a,m,g,ds: 1.000000000000000
+16: NDoF Calib 1: 4: u8,u8,u8,u8: a,m,g,ds: 1.000000000000000
+
+ðcHcB   ­ž÷?u§†ÁÓ.ÂS…ÆAð ~JcB   µ Ý ‹wÿñÿüÿ×£ÄA:¢¯A¢-jÁ¤“EÂj®4=—p =º5q?SA©>gß>	QÞK=)C±¼'ºQ>0z?    
+·@t@ŒVµ½©»=·@t@  €?L4=lþ ==qq?ì§>¹²=
+QÞK=)C±¼'ºQ>0z?    
+Xæs@©aµ½¤=Xæs@  @@ð‘¬ßcB   ©Š@­º†Á¤ì.Â\nÆAð}räcB   w Œ ¥©þÁ êÿÃõÄA#‘²A¨/jÁk EÂÖ.-=žRô<Aq?r2©>gß>	ÒÏB=¢‰«¼k¦Q>J9z?    
+Q;t@ß¬½°Òu=Q;t@  €?½Á,=“õ<o„q?l°§>¹²=
+ÒÏB=¢‰«¼k¦Q>J9z?    
+øÔs@ð¬½"¯u=øÔs@  @@ðövdB   ¹¬õ?k‘…Á.Â·vÆAð[f~dB   õÿK J¬ÿŸ ¼ÿ×£ÄA_²AâSdÁÒDÂí•'=Æùò<åRq?[å¨>gß>	z?=[ˆ£¼ÐVQ>^Az?    
+(&t@™Hª½hïk=(&t@  €?$3'=]ô<)q?Ï–§>¹²=
+z?=[ˆ£¼ÐVQ>^Az?    
+zÍs@‘^ª½Ák=zÍs@  @@ð=eB   ÊPï?éö‡ÁNŽ0Â˜‹ÆAðúYeB    µ ¦¥ÁÿÙÿázÄA¯’²A×VdÁ}–BÂ¼ï+=ó½=Amq?!¨>gß>	»I=½‘¢¼æ-Q>›;z?    
+jós@&L´½‘n=jós@  €?hš+=˜8=\—q?Z.§>¹²=
+»I=½‘¢¼æ-Q>›;z?    
+³s@h´½cTn=³s@  @@ð)„¥eB   ¼Ñï?Œ‡Á¬&0Â·vÆAð×M²eB    e¢Oÿ R¸ÄA™²AãuÁ¤“EÂu˜3=½¿
+=7}q?o‹§>gß>	Ë­T=VV¨¼öWQ>b/z?    
+hÍs@ÏF¾½õ,x=hÍs@  €?ô3=x=Ö¿q?<	¦>¹²=
+Ë­T=VV¨¼öWQ>b/z?    
+gs@àf¾½³ëw=gs@  @@ðåÍ<fB   u*ô?!ó†Á¤E.ÂÆÆAðvALfB   ™ ÷ âŽÿžÿ ázÄA€¤¯A{^ÁåAÂ7p4=J=ƒq?·q§>gß>	YR=zä­¼%kQ>g/z?    
+_Æs@B»½C|=_Æs@  €?Áø3=Eú=Z¾q?š¦>¹²=
+YR=zä­¼%kQ>g/z?    
+;ks@Ïg»½¸Ô{=;ks@  @@ðÀÔfB   @Ý?š°…Á_å,Â§¤ÆAðT5æfB   p | buþ 
+ ázÄAY¶¬AÝTdÁé‰BÂ°j0=zNü< “q?ZB§>gß>	T¡H=_
+±¼zQ>6z?    
+†¸s@Ž:±½i¯z=†¸s@  €?l×/=P	þ<záq?Ìz¥>¹²=
+T¡H=_
+±¼zQ>6z?    
+ë?s@Ñe±½SVz=ë?s@  @@ðYkgB   ÀKá?€†Á¹.ÂÜ‘ÆAð1)€gB   „ d x”ÿ  ázÄA9È©Ay^Á:%GÂŒA/=‘÷<4¢q?ï÷¦>gß>	yîE=	~²¼ÞƒQ>n7z?    
+s¤s@D®½\qz=s¤s@  €?œ“.={ù<<r?§Í¤>¹²=
+yîE=	~²¼ÞƒQ>n7z?    
+Âs@Òt®½Œz=Âs@  @@ð¢hB   æåÔ?å(†Á}.ÂãzÆAðÐhB   — Å þ õÿçÿ\ÄA Ý¦A×VdÁ}–BÂQg1=!r=p°q?]Š¦>gß>	ëCL=Sò°¼èmQ>Ä3z?    
+2ˆs@p|´½Bëz=2ˆs@  €?f0=nè=,?r?TD£>¹²=
+ëCL=Sò°¼èmQ>Ä3z?    
+‹ªr@l²´½ƒz=‹ªr@  @@ð„í™hB    Ïñ?7OˆÁŒ:-Â§]ÆAð®´hB   ‘ ò ¦å & ìÿÍÌÄAY¶¬AÝTdÁé‰BÂ|$2=öô=¹q?‚C¦>gß>	ôŠQ=M­¼´aQ>®0z?    
+vs@„à¹½ëx=vs@  €?r1=z=­Jr?Êê¢>¹²=
+ôŠQ=M­¼´aQ>®0z?    
+v“r@óº½åxx=v“r@  @@ðA71iB   .@í?¡ü†ÁéÉ.ÂÍxÆAðMNiB   \ Ò ­ãÿL íÿ\ÄAÁ}µA¦.jÁÒDÂ§š/=:Á=Î¹q?µJ¦>gß>	ÄHP=ù¤©¼}RQ>'3z?    
+™ws@²Ú¸½„<t=™ws@  €?».=ƒ=³*r?$´£>¹²=
+ÄHP=ù¤©¼}RQ>'3z?    
+XÈr@•¹½)Ás=XÈr@  @@ðB€ÈiB   <ù?!Ô†Á§Œ/Â˜‹ÆAð*øçiB   7 ¨ ñWÿ3 õÿÍÌÄA×·¬Aÿ{^Ánô=Âï’,=:=ý¸q?pg¦>gß>	-îK=
+y¨¼òHQ>o7z?    
+ˆ~s@Š´½à¼p=ˆ~s@  €?ðœ+=Öœ=ã8r?zx£>¹²=
+-îK=
+y¨¼òHQ>o7z?    
+ì·r@'Ð´½ó5p=ì·r@  @@ðøÊ_jB   ¨¬ü?ðT†Á*/Â˜ÆAðÉëjB   ` ž L…ÿöÿ  \ÄAÁ}µA¦.jÁšEÂïÐ+=}0 =¤¹q?@p¦>gß>	Ì&I=Ø½ª¼³LQ>9z?    
+ƒ€s@}l±½£Dq=ƒ€s@  €?” +=Uj=S#r?Ø¤>¹²=
+Ì&I=Ø½ª¼³LQ>9z?    
+«Ür@±·±½*µp=«Ür@  @@ð|÷jB   ¬œ@rë†Á:Ä/ÂS…ÆAð§ßkB    £ Vîÿñÿ ffÄA¾£¯Az^Á¨þ@ÂÄn,=.ÿþ<sºq?k¦>gß>	ÞH=ù~¬¼)WQ>|8z?    
+*s@Ü÷°½ær=*s@  €?`Ÿ+=	º =$r?°ÿ£>¹²=
+ÞH=ù~¬¼)WQ>|8z?    
+QÛr@éB±½ëVr=QÛr@  @@ð›WŽkB   ž ô?¡‡Á=Ý/Âò“ÆAðFÓµkB   } « '9 üÿøÿ×£ÄA¯’²A×VdÁ#AÂ…ì,=´¶ =]¹q?¥k¦>gß>	ë'J=£¬¼TQ>­7z?    
+xs@H²½¦s=xs@  €?¦,=Ÿñ=	#r?= ¤>¹²=
+ë'J=£¬¼TQ>­7z?    
+ Ûr@“²½·xr= Ûr@  @@ð¨ž%lB   Yká?>¼‡ÁÀy/ÂÆAð#ÇOlB   o ® ßx ñÿùÿázÄAC¥¯Aÿ{^ÁØ!DÂ½ª-=[;=Éq?U¦>gß>	^ØL=c—«¼mSQ>œ5z?    
+±ds@œÏ´½”s=±ds@  €?äý,=ÑE=°r?
+8¤>¹²=
+^ØL=c—«¼mSQ>œ5z?    
+®êr@ µ½•zr=®êr@  @@ð‰â¼lB   ¢éé?*ò†ÁL¬,ÂS…ÆAðÂºélB   p ¸ Âd Úÿÿÿ\ÄA¹l¸AÙUdÁ3BÂ3ì.=„=Òq?€Å¥>gß>		GO=¡¬¼ÿXQ>)3z?    
+Ts@0ñ¶½àjt=Ts@  €?È–.=¶=çq?TJ¥>¹²=
+	GO=¡¬¼ÿXQ>)3z?    
+ˆ3s@ˆG·½ÂÂs=ˆ3s@  @@ðÔ)TmB   ðªö?Ä‡ÁC7.Âk‡ÆAð ®ƒmB   t À äìÿãÿÿÿ\ÄAx¡¯A ,jÁwBÂ4ƒ/=ƒ}=?Òq?
+Ä¥>gß>	
+O=‚"®¼Â[Q>í2z?    
+¼Ss@é‹¶½Êðu=¼Ss@  €?./=ã=;çq?ÜH¥>¹²=
+
+O=‚"®¼Â[Q>í2z?    
+(3s@â¶½*Iu=(3s@  @@ð|lëmB   aã?h‹†ÁÀ/ÂãzÆAð}¢nB   u ® —ÿ   HáÄA¯É©Aª0jÁ3BÂmR.=Ù=×q?µ¥>gß>	„L=$#¯¼W`Q>–4z?    
+kOs@kÎ³½,Wu=kOs@  €?Á›-=˜#=½&r?8à£>¹²=
+„L=$#¯¼W`Q>–4z?    
+oÓr@4*´½¶¡t=oÓr@  @@ðà¯‚nB   @òô?·_†ÁcÀ-ÂS…ÆAð–·nB   l ¥ <¶ÿ öÿ×£ÄA€¤¯AÙUdÁ3BÂùÀ,=Px =×q?ƒÀ¥>gß>	˜J=®¼~YQ>Ÿ6z?    
+ Rs@¶Ó±½\s= Rs@  €?Ë ,=É¤=º+r?9Î£>¹²=
+˜J=®¼~YQ>Ÿ6z?    
+^Îr@è4²½8œr=^Îr@  @@ðvõoB   YU @h(‡Á´/Âk‡ÆAðú‰QoB   c ´ % & òÿázÄAŽÛ¦A¨/jÁé‰BÂï(,=|e=(Öq?Å¥>gß>	7K=v‚¬¼üOQ>7z?    
+XSs@yƒ²½õžq=XSs@  €?êg+=#‘=ã*r?ÈÒ£>¹²=
+7K=v‚¬¼üOQ>7z?    
+•Ïr@‚ä²½…ßp=•Ïr@  @@ðk@±oB   HÚá?æ†‡Á‰Ä-ÂÆÆAð™}ëoB   \ Ã ýE ' ðÿR¸ÄAÛ´¬A'x^ÁU}BÂJv+=BS=äq?Ip¥>gß>	™ˆL=µª¼ÿDQ>ß6z?    
+ =s@}´½ßJo= =s@  €?°¶*=X|=4r?L–£>¹²=
+™ˆL=µª¼ÿDQ>ß6z?    
+°¿r@ðm´½n=°¿r@  @@ð'ŠHpB   =Ë?  †Á0Â‚‰ÆAðvq…pB   _ À ù " õÿ×£ÄA:¢¯AåRdÁ¤“EÂYð*=UÚ=½ãq?s¥>gß>	Û´L=÷›¨¼~?Q>E7z?    
+¶=s@%\´½ôóm=¶=s@  €?»0*=d=-4r?	™£>¹²=
+Û´L=÷›¨¼~?Q>E7z?    
+fÀr@BÂ´½e+m=fÀr@  @@ð¥ÓßpB   ~ß?s†ÁÀ.ÂS…ÆAðeqB   n ² Íÿ ýÿ\ÄAÁ}µA¦.jÁ6m?Â²e*=K¨=Ùäq?Œr¥>gß>	hdK=¿à¨¼ˆBQ>#8z?    
+j=s@³½Yµm=j=s@  €?^§)=—Ï=J5r?Š˜£>¹²=
+hdK=¿à¨¼ˆBQ>#8z?    
+Àr@r³½)íl=Àr@  @@ð#wqB   MÍÝ? ‡Á\
+0ÂÆAðóX¹qB   | ¨  Øÿìÿ ×£ÄAý¢¯Ay^ÁžƒBÂ>°*=.r=Âåq?×o¥>gß>	E}J=£˜ª¼òHQ>>8z?    
+¡<s@”þ±½Ð
+o=¡<s@  €?4ó)=†™=26r?Ó•£>¹²=
+E}J=£˜ª¼òHQ>>8z?    
+P¿r@Qd²½ûEn=P¿r@  @@ðodrB   ~ø?O˜†Á•¹-Â=ƒÆAð’LSrB   ƒ «  Ìÿ ázÄA#‘²Ar
+pÁk EÂ~.,=~ =ƒåq?„j¥>gß>	fK=÷¬¼QQ>§6z?    
+h;s@£¦²½ÓÅq=h;s@  €?û<3=ã$=j&q?œ©>Â¸²=
+fK=÷¬¼QQ>§6z?    
+ÌXt@yœµ½!G|=ÌXt@  @@ ðÆ©¥rB   +à?-ç†ÁRˆ/Â˜‹ÆAðo@írB   ƒ ¶ øJ Æÿ ÃõÄA›µ¬A¦.jÁ:%GÂ3µ-=†Ê=cìq?58¥>gß>	‡\M=g¯¼ÓWQ>[4z?    
+`.s@¨4´½«t=`.s@  €?œ&5=žI=D%q?m—©>Â¸²=
+‡\M=g¯¼ÓWQ>[4z?    ð$î<sB   Ã9Ê?®F‡Áé.ÂhÆAð4‡sB    ½ ì6 Øÿ  ÍÌÄA¯É©AÙUdÁi½HÂ–›.=>»=Òûq?ðÖ¤>gß>	\ÇN=Pg°¼M]Q>ª2z?    
+Õs@ÂKµ½{ku=Õs@  €?d|6=ù$=…$q?L“©>Â¸²=
+\ÇN=Pg°¼M]Q>ª2z?    
+ðVt@ò•¸½L‹€=ðVt@  @@ ð´4ÔsB   1ÚÂ?=‡Áp/ÂfÆAðì'!tB   x ¹ ñ ÿÿüÿÍÌÄAkÊ©A®1jÁ2­EÂ†Þ.=—È=Ãûq?ÿÕ¤>gß>	®ëN=b´°¼º^Q>k2z?    
+žs@nµ½âu=žs@  €?$À6=0=v$q?V’©>Â¸²=
+®ëN=b´°¼º^Q>k2z?    
+¸Vt@·¸½ÃÇ€=¸Vt@  @@ ðVxktB   &š­?â)‡Á¸–-ÂMUÆAðÉ»tB   r ± ýÞÿ ùÿR¸ÄAý¢¯Ay^ÁÒDÂ(þ-=¨$=süq?´×¤>gß>	˜êM=iÓ¯¼)]Q>|3z?    
+ês@¯‰´½ð¢t=ês@  €?hÞ5=Ž=*%q?”©>Â¸²=
+˜êM=iÓ¯¼)]Q>|3z?    
+Wt@ZÒ·½Š(€=Wt@  @@ ðc¿uB   e,Â?y‡Á<·/ÂÄHÆAðhUuB   k ª Ýÿ. öÿ×£ÄAY¶¬AHŸXÁ¨þ@Â~º,=$œ=ýq?Û¤>gß>	rÎL=0,®¼”XQ>í4z?    
+s@5Ÿ³½ •r=s@  €?™4=o=Ì%q?‰—©>Â¸²=
+rÎL=0,®¼”XQ>í4z?    
+¹Wt@–ç¶½ÑC~=¹Wt@  @@ ðçšuB   g>Ü?ÝK‡ÁÛÝ,Âk‡ÆAðFïuB   d ª éÿ0 óÿ\ÄAè‘²AÙUdÁ3BÂ¦+=Dj=.ýq?#à¤>gß>	âL=@@¬¼$PQ>Z6z?    
+Ës@Î
+³½gbp=Ës@  €?k`3=VÙ=ê%q?šœ©>Â¸²=
+âL=@@¬¼$PQ>Z6z?    
+æXt@æR¶½|=æXt@  @@ ðwN1vB   1(Å?q†‡ÁÍì+ÂãzÆAðåöˆvB   b ¯ ñÿ) óÿ×£ÄA¾£¯AÝTdÁé‰BÂŽ*=Ñf=ýq?å¤>gß>	CK= ›ª¼XGQ>‚7z?    
+üs@1¹²½‹•n=üs@  €?im2=Ø=Á%q?Š¡©>Â¸²=
+CK= ›ª¼XGQ>‚7z?    
+Zt@ ¶½æDz=Zt@  @@ ðÚ‘ÈvB   ©î?I‘‡Á[à.Â7SÆAðÂê"wB   g ¯ õÿ øÿ\ÄA€¤¯AÙUdÁ2GÂ
+*=TE=-ýq?©æ¤>gß>	K=ŸÚ©¼òDQ>8z?    
+Ws@xo²½Qµm=Ws@  €?§ë1=j·=ê%q?%£©>Â¸²=
+K=ŸÚ©¼òDQ>8z?    
+rZt@÷¶µ½ey=rZt@  @@ ð,Ø_wB   ‚â?Ky‡ÁŸ/Â§]ÆAðaÞ¼wB   q ¯  þÿûÿ\ÄAîk¸AÝTdÁ¨þ@Â
+E*=Û>=ýq?cæ¤>gß>	¯K=¹&ª¼8EQ>8z?    
+Js@—{²½#n=Js@  €?ü#2=¡®=Ò%q?Ý¢©>Â¸²=
+¯K=¹&ª¼8EQ>8z?    
+eZt@‘Áµ½CÕy=eZt@  @@ ðÎ÷wB   FàÛ?·2†ÁF„.Â\nÆAð?ÒVxB   u ³ 	 äÿ \ÄA¹l¸Aª0jÁ3BÂ8+=¤¡=óüq? â¤>gß>	«îK=â_«¼~LQ>Á6z?    
+Es@¯'³½&²o=Es@  €?)3=•=°%q?pž©>Â¸²=
+«îK=â_«¼~LQ>Á6z?    
+_Yt@Tm¶½ƒd{=_Yt@  @@ ð–cŽxB   \óØ?·{„ÁQ´-ÂcWÆAðÞÅðxB   w ² ý% Õÿ ÍÌÄA/|µA1w^ÁwBÂ÷‚,=<=¬üq?Ý¤>gß>	 çL=M3­¼kTQ>;5z?    
+%s@Iî³½Žèq=%s@  €?d4=ok=h%q?u™©>Â¸²=
+ çL=M3­¼kTQ>;5z?    
+>Xt@Œ3·½j›}=>Xt@  @@ ð­%yB   '™ì?ßT†Á»^-ÂcWÆAð»¹ŠyB   t ¶ ü Ùÿ ö(ÄAÓŽ²A1w^Áòë@Âª‘-=ù:=rüq?;Ù¤>gß>	ŸM=¶Â®¼zZQ>4z?    
+Fs@µ{´½IÆs=Fs@  €?s5=+¡=-%q?›•©>Â¸²=
+ŸM=¶Â®¼zZQ>4z?    
+_Wt@ÇÀ·½Óy=_Wt@  @@ ðTö¼yB   ú Ø?ö‡ÁŠ¿,ÂÍxÆAðZ­$zB   s º  ìÿýÿÍÌÄA#‘²A¨/jÁì¶HÂ§.=Â+=Eüq?9Ø¤>gß>	ÔM=¥±¯¼É[Q>¦3z?    
+s@9™´½Ðt=s@  €?”ú5=M=ý$q?•”©>Â¸²=
+ÔM=¥±¯¼É[Q>¦3z?    
+)Wt@Þ·½!B€=)Wt@  @@ ðO@TzB   ¢ã?l^‡Á´+ÂfÆAð8¡¾zB   r ¹ ùÿ øÿÍÌÄA¯’²A×VdÁ}–BÂp.=Œ=	üq?*Ú¤>gß>	
+²M=™„¯¼ÖWQ>ÿ3z?    
+s@}‚´½ô·t=s@  €?é5=½|=¿$q?–©>Â¸²=

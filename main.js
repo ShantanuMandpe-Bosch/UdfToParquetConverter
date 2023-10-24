@@ -32,6 +32,9 @@ const csvmaker = function (data,schema,fileName) {
         csvRows.push(rowData);
     })
 
+    const content = document.querySelector(".content");
+    content.textContent += ".csv file created. Creating download."
+
     const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' }); 
     const url = window.URL.createObjectURL(blob)  
     const a = document.createElement('a') 
@@ -41,12 +44,16 @@ const csvmaker = function (data,schema,fileName) {
     URL.revokeObjectURL(url)
 } 
 
-previewFile()
-
-function previewFile() {
+async function previewFile() {
     const content = document.querySelector(".content");
     const [file] = document.querySelector("input[type=file]").files;
+
+    console.log([file].at(0))
+
+
     const reader = new FileReader();
+
+    content.textContent += "The Button has been clicked\n"
   
     reader.addEventListener(
       "load",
@@ -62,11 +69,9 @@ function previewFile() {
             if ((/^(1.0|1.1)/).test(fileContentArray[line])) {
                 if (fileContentArray[line] == "1.0") {
                     //variable_schema = 0
-                    header.push(fileContentArray[line])
-                    test = test + binaryData.byteLength
+                    test = test + fileContentArray[line].length
                 } else if (fileContentArray[line] == "1.1") {
                     //variable_schema = 1
-                    header.push(fileContentArray[line])
                     test = test + fileContentArray[line].length
                 }
             }
@@ -79,7 +84,7 @@ function previewFile() {
             
         }
 
-        console.log(header)
+        content.textContent += "Getting the schema...\n"
 
         // get the schema from the header files 
         header.forEach((line) => {
@@ -87,16 +92,15 @@ function previewFile() {
             // add elements to the main schema
             schema.sensorID.push(split[0])
             schema.sensorName.push(String(split[1]).trim())
-            schema.eventSize.push(split[2])
-            schema.parseFormat.push(String(dataTypeEquivalent(split[3])).split(",").at(0))
+            schema.eventSize.push(parseInt(String(split[2]).trim()))
+            schema.parseFormat.push(String(dataTypeEquivalent(String(split[3]).trim())).split(",").at(0))
             schema.axisNames.push(String(split[4]).trim().toUpperCase())
             schema.scalingFactor.push(split[5])
         })
 
+
+        content.textContent += "Schema Updated. Reading the file in full...\n"
         console.log(schema)
-
-        content.innerText = reader.result;
-
         readAsBuffer()
       },
       false,
@@ -119,7 +123,7 @@ function readAsBuffer(){
         const buffer = reader.result;
         const view = new Uint8Array(buffer);
 
-        content.innerText = view;
+        //content.innerText = view;
 
         // here we have some header part and rest is body
         let subUint8View = view.subarray(test) 
@@ -127,17 +131,15 @@ function readAsBuffer(){
         let identifierIndex = subUint8View.indexOf(start_uint8) //first entry of the value f0 - using as an identifier
 
         let temp = subUint8View.subarray(identifierIndex)
-
-        let line = []
+    
         let tempLength = temp.length
-        for (let i = 0; i < tempLength; i++) {
-            line.push(temp[i])
-        }
-
-        content.innerText = line;
-
+        // for (let i = 0; i < tempLength; i++) {
+        //     line.push(temp[i])
+        // }
+        content.textContent += "Creating array from the file buffer \n"
+        let line = Array.from(temp)
+        console.log(line)
         parseFile(line)
-
 
       },
       false,
@@ -149,7 +151,10 @@ function readAsBuffer(){
 }
 
 function parseFile(line){
+    
     let formatCheck = line.includes(start_uint8)
+    const content = document.querySelector(".content");
+    content.textContent += "File divided according to identifier. Converting data according to format...\n"
 
         let counter = 0
         //assuming its timestamp id and start id are the same ids 
@@ -184,24 +189,24 @@ function parseFile(line){
                 let valueSize = schema.eventSize[parseInt(id)]
                 //console.log("valueSize : " + parseInt(valueSize))
                 let parse = schema.parseFormat[String(id)]
+                let scalingFactor = schema.scalingFactor[String(id)]
                 //console.log("parse : " + parse)
+                console.log("scaling Factor : " + scalingFactor)
 
                 let subArr = []
                 subArr = line.splice(counter, valueSize)
 
-                dataFormatting(parse,subArr)
+                dataFormatting(parse,subArr,parseFloat(scalingFactor))
+
         }
 
         console.log(sensorID)
         console.log(sensorValue)
-        convertToParquet(sensorID, sensorValue)
+        convertToCSV(sensorID, sensorValue)
+        content.textContent += "File formatted. Converting to CSV...\n"
 }
 
-async function convertToParquet(arr1, arr2){
-
-    const content = document.querySelector(".content");
-    content.innerHTML = arr2
-
+async function convertToCSV(arr1, arr2){
 
     let csvSchema = {}
     schema.sensorName.forEach((id) => {
@@ -226,6 +231,9 @@ async function convertToParquet(arr1, arr2){
         csvData.push(temp)
     }
     console.log(csvSchema)
+
+    const content = document.querySelector(".content");
+    content.textContent += "Creating csv file..."
     
     console.log(csvData)
     csvmaker(csvData,csvSchema,"download.csv")
@@ -312,44 +320,76 @@ async function convertToParquet(arr1, arr2){
 
 }
 
-function dataFormatting(parseFormat, arr){
+function dataFormatting(parseFormat, arr,scalingFactor){
     if(parseFormat == 'INT_8'){
         let uint8Array = new Uint8Array(arr);
         let int8Array = new Int8Array(uint8Array.buffer);
+        int8Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...int8Array]
     } else if (parseFormat == 'INT_16'){
         let uint8Array = new Uint8Array(arr);
         let int16Array = new Int16Array(uint8Array.buffer);
+        int16Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...int16Array]
+
     } else if (parseFormat == 'UINT_8'){
         let uint8Array = new Uint8Array(arr);
+        uint8Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...uint8Array]
     } else if (parseFormat == 'UINT_16'){
         let uint8Array = new Uint8Array(arr);
         let uint16Array = new Uint16Array(uint8Array.buffer);
+        uint16Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...uint16Array]
     } else if (parseFormat == 'INT_32'){
         let uint8Array = new Uint8Array(arr);
         let int32Array = new Int32Array(uint8Array.buffer);
+        int32Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...int32Array]
     } else if (parseFormat == 'UINT_32'){
         let uint8Array = new Uint8Array(arr);
         let uint32Array = new Uint32Array(uint8Array.buffer);
+        uint32Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...uint32Array]
     } else if (parseFormat == 'INT_64'){
         let uint8Array = new Uint8Array(arr);
         let int64Array = new BigInt64Array(uint8Array.buffer);
+        int64Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...int64Array]
     } else if (parseFormat == 'UINT_64'){
         let uint8Array = new Uint8Array(arr);
         let uint64Array = new BigUint64Array(uint8Array.buffer);
+        uint64Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...uint64Array]
     } else if (parseFormat == 'FLOAT'){
         let uint8Array = new Uint8Array(arr);
         let float32Array = new Float32Array(uint8Array.buffer);
+        float32Array.forEach((value)=>{
+            value = value*scalingFactor
+        })
         sensorValue = [...sensorValue,...float32Array]
     } else {
-        console.error("This is an invalid sensor Data Format")
+        // "This is an invalid sensor Data Format")
+        window.onerror = function(msg, url, linenumber) {
+            alert('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+            return true;
+        }
     }
 }
 
